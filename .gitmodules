@@ -1,0 +1,3 @@
+[submodule "external/task"]
+	path = external/task
+	url = https://github.com/MateuszDyrda2/task.git
