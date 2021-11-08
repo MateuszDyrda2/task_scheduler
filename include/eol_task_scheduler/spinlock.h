@@ -1,5 +1,5 @@
-#ifndef EOL_TASK_SCHEDULER_TASK_SCHEDULER_H
-#define EOL_TASK_SCHEDULER_TASK_SCHEDULER_H
+#ifndef EOL_TASK_SCHEDULER_SPINLOCK_H
+#define EOL_TASK_SCHEDULER_SPINLOCK_H
 
 #include <atomic>
 #include <xmmintrin.h>
@@ -30,4 +30,4 @@ struct spinlock
 	}
 };
 }
-#endif // !EOL_TASK_SCHEDULER_TASK_SCHEDULER_H
+#endif // !EOL_TASK_SCHEDULER_SPINLOCK_H
