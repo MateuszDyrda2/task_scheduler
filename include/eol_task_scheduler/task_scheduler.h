@@ -22,16 +22,15 @@ class task_scheduler
 	task_scheduler(const self_type&) = delete;
 
 	template <std::size_t Priority, class F>
-	void submit(F&& callable);
-	void wait_for_all();
+	requires(Priority < PriorityLevels) void submit(F&& callable);
 	~task_scheduler();
 
   private:
 	std::vector<std::thread> workers;
 	task_qarray_type jobQueues;
 
-	std::mutex _waitMtx;
-	std::condition_variable _waitCvar;
+	mutable std::mutex _waitMtx;
+	mutable std::condition_variable _waitCvar;
 	bool is_running;
 };
 template <std::size_t PriorityLevels>
@@ -65,15 +64,11 @@ task_scheduler<PriorityLevels>::task_scheduler(size_type threadCount)
 }
 template <std::size_t PriorityLevels>
 template <std::size_t Priority, class F>
-void task_scheduler<PriorityLevels>::submit(F&& callable)
+requires(Priority < PriorityLevels) void task_scheduler<PriorityLevels>::
+	submit(F&& callable)
 {
-	static_assert(Priority < PriorityLevels, "Priority not in the required range");
 	jobQueues[Priority].emplace(std::forward<F>(callable));
 	_waitCvar.notify_one();
-}
-template <std::size_t PriorityLevels>
-void task_scheduler<PriorityLevels>::wait_for_all()
-{
 }
 template <std::size_t PriorityLevels>
 task_scheduler<PriorityLevels>::~task_scheduler()
@@ -83,6 +78,5 @@ task_scheduler<PriorityLevels>::~task_scheduler()
 	for (auto& w : workers)
 		w.join();
 }
-
 } // namespace eol
 #endif // !EOL_TASK_SCHEDULER_TASK_SCHEDULER_H
