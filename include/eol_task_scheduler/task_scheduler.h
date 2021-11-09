@@ -2,10 +2,7 @@
 #define EOL_TASK_SCHEDULER_TASK_SCHEDULER_H
 
 #include "task_queue.h"
-#include "task_stats.h"
-#include <array>
 #include <condition_variable>
-#include <mutex>
 #include <thread>
 #include <vector>
 
