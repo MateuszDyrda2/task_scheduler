@@ -7,6 +7,9 @@
 #include <vector>
 
 namespace eol {
+/** Simple multithreaded task scheduler implementation
+ * that after creation doesn't allocate any memory
+*/
 template <std::size_t PriorityLevels>
 class task_scheduler
 {
@@ -18,9 +21,18 @@ class task_scheduler
 	using task_type		   = typename task_queue_type::task_type;
 
   public:
+	/** @brief Create a task scheduler with a specified number
+	 * of workers 
+	 * @param threadCount number of workers
+	*/
 	task_scheduler(size_type threadCount);
 	task_scheduler(const self_type&) = delete;
 
+	/** @brief Submit a task to be executed on a free thread
+	 * with a specified priority
+	 * @param callable a callable object without arguments and with 
+	 * void return type
+	 */
 	template <std::size_t Priority, class F>
 	requires(Priority < PriorityLevels) void submit(F&& callable);
 	~task_scheduler();
