@@ -6,6 +6,14 @@
 #include <thread>
 #include <vector>
 
+#ifndef EOL_TASK_SIZE
+#	define EOL_TASK_SIZE 32
+#endif // !EOL_TASK_SIZE
+
+#ifndef EOL_QUEUE_SIZE
+#	define EOL_QUEUE_SIZE 128
+#endif // !EOL_QUEUE_SIZE
+
 namespace eol {
 /** Simple multithreaded task scheduler implementation
  * that after creation doesn't allocate any memory
@@ -16,7 +24,7 @@ class task_scheduler
   public:
 	using self_type		   = task_scheduler<PriorityLevels>;
 	using size_type		   = std::size_t;
-	using task_queue_type  = task_queue<128, 32>;
+	using task_queue_type  = task_queue<EOL_QUEUE_SIZE, EOL_TASK_SIZE>;
 	using task_qarray_type = std::array<task_queue_type, PriorityLevels>;
 	using task_type		   = typename task_queue_type::task_type;
 
